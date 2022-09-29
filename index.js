@@ -67,7 +67,7 @@ app.post('/api/users/:_id/exercises', (req, res) => {
       id: user,
       description: body.description,
       duration: body.duration,
-      date: body.date
+      date: (body.date != undefined) ? body.date : new Date()
     })
 
     exercise.save((err, newRecord) => {
