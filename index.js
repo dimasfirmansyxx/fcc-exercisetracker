@@ -76,7 +76,7 @@ app.post('/api/users/:_id/exercises', (req, res) => {
       res.json({
         _id: newRecord.id,
         username: data.username,
-        date: newRecord.date,
+        date: new Date(newRecord.date).toDateString(),
         duration: newRecord.duration,
         description: newRecord.description
       })
@@ -101,7 +101,14 @@ app.get('/api/users/:id/logs', (req, res) => {
     if (req.query.limit != undefined && req.query.limit > 0) exercise.limit(req.query.limit)
     exercise.exec((err, data) => {
       if (err) return console.error(err)
-      const logs = data
+      const logs = []
+      for(let i = 0; i < data.length; i++) {
+        logs.push({
+          description: data[i].description,
+          duration: data[i].duration,
+          date: new Date(data[i].date).toDateString()
+        })
+      }
 
       res.json({
         username: user.username,
